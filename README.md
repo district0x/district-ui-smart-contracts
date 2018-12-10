@@ -5,7 +5,9 @@
 Clojurescript [re-mount](https://github.com/district0x/d0x-INFRA/blob/master/re-mount.md) module, that takes care of loading Ethereum smart-contract files.
 
 ## Installation
-Add `[district0x/district-ui-smart-contracts "1.0.5"]` into your project.clj
+This module is available as a Maven artifact from Clojars. The latest released version is: <br>
+[![Clojars Project](https://img.shields.io/clojars/v/district0x/district-ui-smart-contracts.svg)](https://clojars.org/district0x/district-ui-smart-contracts)
+
 Include `[district.ui.smart-contracts]` in your CLJS file, where you use `mount/start`
 
 ## API Overview
