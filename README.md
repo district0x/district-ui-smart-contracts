@@ -94,13 +94,14 @@ Starting the module may look like this:
 
 ## <a name="adding-abis-to-js"> Adding abis into js bundle
 In order to use the option :load-method :use-loaded you need to provide some info at build time so contracts abis
-can be included in the bundle. You provide this information via environment variables at build time.
+can be included in the bundle. You provide this information via :closure-defines in your build like
 
 Example:
 ```
-SMART_CONTRACTS=./src/memefactory/shared/smart_contracts.cljs
-SMART_CONTRACTS_BUILD_PATH=./resources/public/contracts/build/
-SMART_CONTRACTS_SKIP=ds-guard,param-change-registry-db,meme-registry-db,minime-token-factory
+:closure-defines {"goog.DEBUG"                                                   true
+                  "district.ui.smart-contracts.utils.smart-contracts"            "./src/memefactory/shared/smart_contracts.cljs"
+                  "district.ui.smart-contracts.utils.smart-contracts-build-path" "./resources/public/contracts/build/"
+                  "district.ui.smart-contracts.utils.smart-contracts-skip"       "ds-guard,param-change-registry-db,meme-registry-db,minime-token-factory"}
 ```
 
 Be aware that using this method is only supported for contracts compiled in the truffle json format.

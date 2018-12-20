@@ -1,6 +1,11 @@
 (ns district.ui.smart-contracts.utils
   (:require [clojure.string :as str]
-           [clojure.data.json :as json]))
+            [clojure.data.json :as json]
+            [cljs.core]))
+
+(cljs.core/goog-define smart-contracts "")
+(cljs.core/goog-define smart-contracts-build-path "")
+(cljs.core/goog-define smart-contracts-skip "")
 
 (defn get-abi-from-truffle-art [json-path]
   (-> (slurp json-path)
@@ -8,14 +13,14 @@
       :abi))
 
 (defmacro slurp-env-contracts []
-  (let [smart-contracts-file (System/getenv "SMART_CONTRACTS")
-        smart-contracts-build-path (System/getenv "SMART_CONTRACTS_BUILD_PATH")
-        skip-contracts (when-let [scs (System/getenv "SMART_CONTRACTS_SKIP")]
-                         (->> (str/split scs #",")
+  (let [smart-contracts-file smart-contracts
+        smart-contracts-build-path smart-contracts-build-path
+        skip-contracts (when (not-empty smart-contracts-skip)
+                         (->> (str/split smart-contracts-skip #",")
                               (mapv keyword)))]
     (binding [*out* *err*]
       (println "SKIPPING CONTRACTS " skip-contracts)
-      (if (and smart-contracts-file smart-contracts-build-path)
+      (if (and (not-empty smart-contracts-file) (not-empty smart-contracts-build-path))
         (let [[_ _ smart-contracts-map] (->> (slurp smart-contracts-file)
                                              (format "[%s]")
                                              read-string
