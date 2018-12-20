@@ -10,7 +10,8 @@
     [district.ui.web3.events :as web3-events]
     [district0x.re-frame.spec-interceptors :refer [validate-first-arg validate-args]]
     [re-frame.core :refer [reg-event-fx trim-v]]
-    [clojure.string :as string])
+    [clojure.string :as string]
+    [district.ui.logging.events :as logging])
   (:require-macros [district.ui.smart-contracts.utils :refer [slurp-env-contracts]]))
 
 (def interceptors [trim-v])
@@ -36,9 +37,13 @@
     (merge
       {:db (queries/merge-contracts db contracts)}
       (when-not disable-loading-at-start?
-        {:dispatch (case load-method
-                     :request [::load-contracts opts]
-                     :use-loaded [::use-loaded-contracts opts])}))))
+        {:dispatch (if (and (= load-method :use-loaded)
+                            (or (= load-bin? true)
+                                (not= format :truffle-json)))
+                     [::logging/error "Load method :use-loaded only supported for truffle-json. No bin support yet" opts ::start]
+                     (case load-method
+                      :request [::load-contracts opts]
+                      :use-loaded [::use-loaded-contracts opts]))}))))
 
 
 (defn- ensure-slash [path]
