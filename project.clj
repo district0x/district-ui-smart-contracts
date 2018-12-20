@@ -6,6 +6,7 @@
 
   :dependencies [[cljs-ajax "0.7.2"]
                  [cljs-web3 "0.19.0-0-9"]
+                 [org.clojure/data.json "0.2.6"]
                  [day8.re-frame/async-flow-fx "0.0.8"]
                  [day8.re-frame/forward-events-fx "0.0.5"]
                  [day8.re-frame/http-fx "0.1.4"]
